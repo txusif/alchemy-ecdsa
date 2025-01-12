@@ -10,12 +10,12 @@ export default function TransactionLogs({
 }: TransactionLogsProps) {
   return (
     <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-4 text-white">Transaction Logs</h2>
+      <h2 className="text-xl font-medium mb-4 text-white">Transaction Logs</h2>
       <ul className="space-y-2">
         {transactions.map((tx, index) => (
           <li
             key={index}
-            className={`p-2 rounded flex items-start space-x-2 bg-gray-800 ${
+            className={`p-2 rounded-lg flex items-start space-x-2 bg-gray-800 ${
               tx.success ? "text-green-500" : "text-red-500"
             }`}
           >
@@ -26,9 +26,10 @@ export default function TransactionLogs({
             )}
             <div className="flex-grow overflow-hidden">
               <p className="truncate">
-                {tx.success
-                  ? `Transferred ${tx.amount} ETH`
-                  : `Transaction Failed ${tx.amount} ETH`}
+                {tx.success ? "Transaction Successful" : "Transaction Failed"}
+              </p>
+              <p className="truncate text-sm opacity-80 text-white">
+                Amount: {tx.amount} ETH
               </p>
               <p className="truncate text-sm opacity-80 text-white">
                 From: {tx.sender}

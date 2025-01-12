@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { utf8ToBytes } from "ethereum-cryptography/utils";
-import { DollarSign, Key, Send } from "lucide-react";
+import { DollarSign, Key, Send, UserRound } from "lucide-react";
 import { Transaction } from "@/App";
 import { toast } from "react-hot-toast";
 
@@ -31,9 +31,15 @@ export default function Transfer({
   setBalance,
   setTransactions,
 }: TransferProps) {
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>(1);
   const [recipient, setRecipient] = useState<string>("");
   const [privateKey, setPrivateKey] = useState<string>("");
+
+  function resetFields() {
+    setAmount(1);
+    setRecipient("");
+    setPrivateKey("");
+  }
 
   const setValue =
     (setter: React.Dispatch<React.SetStateAction<any>>) =>
@@ -72,12 +78,12 @@ export default function Transfer({
           secondary: "#fff",
         },
       });
-      setTransactions((transactions: Transaction) => [
-        ...transactions,
+      setTransactions((prevTransactions) => [
+        ...prevTransactions,
         { ...transaction, success: true },
       ]);
     } catch (error) {
-      toast.error(error.response.data.message, {
+      toast.error(error.response?.data?.message || "Transaction failed", {
         style: {
           background: "#1F2937",
           color: "#fff",
@@ -88,16 +94,16 @@ export default function Transfer({
           secondary: "#fff",
         },
       });
-      setTransactions((transactions: Transaction) => [
-        ...transactions,
+      setTransactions((prevTransactions) => [
+        ...prevTransactions,
         { ...transaction, success: false },
       ]);
-      console.error(error.response.data.message);
+      console.error(error.response?.data?.message);
     }
   }
 
   return (
-    <Card className="w-full bg-gray-800 text-white overflow-hidden">
+    <Card className="w-full bg-gray-800 text-white overflow-hidden border-none">
       <CardHeader className="flex flex-row items-center space-x-2">
         <Send className="w-6 h-6 text-green-500 flex-shrink-0" />
         <CardTitle className="text-xl font-medium">Transfer Funds</CardTitle>
@@ -112,17 +118,17 @@ export default function Transfer({
               value={amount}
               onChange={setValue(setAmount)}
               min={1}
-              className="bg-gray-700 text-white w-full"
+              className="bg-gray-700 text-white w-full border-gray-600"
             />
           </div>
           <div className="flex items-center space-x-2">
-            <Send className="w-5 h-5 text-gray-400 flex-shrink-0" />
+            <UserRound className="w-5 h-5 text-gray-400 flex-shrink-0" />
             <Input
               type="text"
               placeholder="Recipient Address"
               value={recipient}
               onChange={setValue(setRecipient)}
-              className="bg-gray-700 text-white w-full"
+              className="bg-gray-700 text-white w-full border-gray-600"
             />
           </div>
           <div className="flex items-center space-x-2">
@@ -132,15 +138,22 @@ export default function Transfer({
               placeholder="Your Private Key"
               value={privateKey}
               onChange={setValue(setPrivateKey)}
-              className="bg-gray-700 text-white w-full"
+              className="bg-gray-700 text-white w-full border-gray-600"
             />
           </div>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex gap-4 justify-end">
+        <Button
+          variant={"secondary"}
+          onClick={resetFields}
+          className="w-1/4 text-base"
+        >
+          Clear
+        </Button>
         <Button
           onClick={handleTransfer}
-          className="w-1/2 mx-auto bg-blue-600 hover:bg-blue-700"
+          className="w-1/4 text-base bg-blue-600 hover:bg-blue-700"
         >
           Transfer
         </Button>

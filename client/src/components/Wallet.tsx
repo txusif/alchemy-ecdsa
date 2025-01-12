@@ -5,8 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -53,17 +51,17 @@ export default function Wallet({
   }
 
   return (
-    <Card className="w-full bg-gray-800 text-white overflow-hidden">
+    <Card className="w-full bg-gray-800 border-none text-white overflow-hidden">
       <CardHeader className="flex flex-row items-center space-x-2">
         <WalletIcon className="w-6 h-6 text-blue-500" />
         <CardTitle className="text-xl font-medium">Wallet</CardTitle>
       </CardHeader>
       <CardContent>
         <Select onValueChange={handleChange}>
-          <SelectTrigger className="bg-gray-700 text-white truncate">
+          <SelectTrigger className="bg-gray-700 text-white border-gray-600 truncate">
             <SelectValue placeholder="Select an address" />
           </SelectTrigger>
-          <SelectContent className="bg-gray-700">
+          <SelectContent className="bg-gray-700 border-gray-600">
             {addresses.map((item) => (
               <SelectItem
                 key={item.address}
@@ -77,9 +75,9 @@ export default function Wallet({
         </Select>
       </CardContent>
       <CardFooter>
-        <Badge className="h-9 px-4 py-2">
+        <div className="h-9 px-4 py-2 rounded-md flex items-center text-base font-medium bg-green-600">
           Balance: {balance ? `${balance} ETH` : "Select an address"}
-        </Badge>
+        </div>
       </CardFooter>
     </Card>
   );

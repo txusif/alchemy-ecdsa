@@ -14,7 +14,7 @@ export type addressesType = {
 export interface Transaction {
   sender: string;
   recipient: string;
-  amount: string;
+  amount: number;
   success: boolean;
 }
 
